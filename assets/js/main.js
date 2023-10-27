@@ -15,8 +15,6 @@ menu.onclick = function() {
 // Hamburger
 const hamburger = document.querySelector('.hamburger');
 const navLinks = document.querySelector('.nav-links');
-// Add a flag to track if the hamburger menu is active
-let isHamburgerActive = false;
 
 // Book Appointment Button inside the header
 const bookAppointmentButton = document.querySelector('.book-appointment');
@@ -50,25 +48,28 @@ function enableScroll() {
 // Function to hide the hamburger menu
 function hideHamburgerMenu() {
     navLinks.classList.remove('active');
-    isHamburgerActive = false;
     enableScroll(); // Enable scrolling
 }
 
-// Open or close navLinks when hamburger is clicked
-hamburger.addEventListener('click', () => {
-    if (isHamburgerActive) {
-        hideHamburgerMenu();
-    } else {
-        navLinks.classList.add('active');
-        isHamburgerActive = true;
+// Function to toggle hamburger menu
+function toggleHamburgerMenu() {
+    navLinks.classList.toggle('active');
+    if (navLinks.classList.contains('active')) {
         disableScroll(); // Disable scrolling
+    } else {
+        enableScroll(); // Enable scrolling
     }
+}
+
+// Open or close navLinks when hamburger is clicked
+hamburger.addEventListener('click', (event) => {
+    event.stopPropagation(); // Prevent click propagation
+    toggleHamburgerMenu();
 });
 
-// Clicking anywhere outside the website (on the document)
+// Close the hamburger menu when clicking outside of it
 document.addEventListener('click', (event) => {
-    // Check if the hamburger menu is active and the click is not inside the hamburger or the navigation links
-    if (isHamburgerActive && event.target !== hamburger && !navLinks.contains(event.target)) {
+    if (navLinks.classList.contains('active') && event.target !== hamburger && !navLinks.contains(event.target)) {
         hideHamburgerMenu();
     }
 });
